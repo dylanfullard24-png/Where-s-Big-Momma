@@ -7,7 +7,7 @@
   <meta name="description" content="Where's Big Momma? A free interactive game to help beekeepers learn how to spot queen bees in hives. Improve your hive inspection skills while having fun!">
   <meta name="keywords" content="beekeeping, queen bee, apiary, hive, educational game, bees">
   <meta name="author" content="Dylan Fullard">
-  
+
   <!-- Google Search Console verification -->
   <meta name="google-site-verification" content="25eowrqBH5gL8-Qq278cFvBtvD12w8a2pRl4vO65eH0" />
 
@@ -79,7 +79,6 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  // --- Slides setup ---
   const hives = [
     "hive1.jpg",
     "hive2.jpg",
@@ -98,8 +97,8 @@ document.addEventListener("DOMContentLoaded", function() {
     { x: 0.55, y: 0.60, radius: 0.05 }
   ];
 
-  let current = 0; 
-  let startTime = 0; 
+  let current = 0;
+  let startTime = 0;
   let timerInterval;
 
   const img = document.getElementById("hive");
@@ -109,13 +108,11 @@ document.addEventListener("DOMContentLoaded", function() {
   const startScreen = document.getElementById("start-screen");
   const startBtn = document.getElementById("start-btn");
 
-  // --- Start button handler ---
   startBtn.addEventListener("click", function() {
-    startScreen.style.display = "none"; // hide home screen and image
-    gameDiv.style.display = "inline-block"; // show game
+    startScreen.style.display = "none";
+    gameDiv.style.display = "inline-block";
     message.textContent = "Click where you think the queen is hiding";
 
-    // --- Start timer ---
     startTime = Date.now();
     timerDiv.textContent = "Time: 0.0s";
 
@@ -125,7 +122,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 100);
   });
 
-  // --- Click handler ---
   img.addEventListener("click", function(e) {
     const rect = img.getBoundingClientRect();
     const clickX = (e.clientX - rect.left) / rect.width;
@@ -146,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function() {
           clearInterval(timerInterval);
           const totalTime = ((Date.now() - startTime)/1000).toFixed(1);
           message.textContent = "🏆 All hives done! Total time: " + totalTime + " seconds";
-          img.style.display = "none"; 
+          img.style.display = "none";
           timerDiv.textContent = "Final Time: " + totalTime + "s";
         } else {
           img.src = hives[current];
@@ -159,12 +155,13 @@ document.addEventListener("DOMContentLoaded", function() {
       message.style.color = "red";
     }
   });
-
 });
 </script>
 
 </body>
 </html>
+
+
 
 
 
