@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Where's Big Momma? Learn to Spot Queen Bees</title>
+  <meta name="description" content="Where's Big Momma? A free interactive game to help beekeepers learn how to spot queen bees in hives. Improve your hive inspection skills while having fun!">
+  <meta name="keywords" content="beekeeping, queen bee, apiary, hive, educational game, bees">
+  <meta name="author" content="Dylan Fullard">
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f3e9;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    #game {
+      position: relative;
+      display: none; /* hidden until game starts */
+      border: 4px solid #333;
+      cursor: crosshair;
+      margin: 0 auto;
+    }
+    #hive {
+      max-width: 90vw;
+      height: auto;
+      display: block;
+    }
+    #message {
+      margin-top: 15px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    #timer {
+      margin-top: 10px;
+      font-size: 1em;
+      font-weight: normal;
+      color: #333;
+    }
+    #start-screen {
+      margin-top: 50px;
+    }
+    #start-screen img {
+      max-width: 80vw;
+      height: auto;
+      display: block;
+      margin: 0 auto 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🐝 Where's Big Momma? Learn to Spot Queen Bees</h1>
+
+<div id="start-screen">
+  <img src="home.jpg" alt="Welcome to Where's Big Momma?">
+  <button id="start-btn">Start Game</button>
+</div>
+
+<div id="game">
+  <img id="hive" src="hive1.jpg" alt="Hive 1 image with queen bee">
+</div>
+
+<div id="message"></div>
+<div id="timer"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // --- Slides setup ---
+  const hives = [
+    "hive1.jpg",
+    "hive2.jpg",
+    "hive3.jpg",
+    "hive4.jpg",
+    "hive5.jpg",
+    "hive6.jpg"
+  ];
+
+  const queens = [
+    { x: 0.60, y: 0.78, radius: 0.05 },
+    { x: 0.57, y: 0.55, radius: 0.06 },
+    { x: 0.48, y: 0.40, radius: 0.05 },
+    { x: 0.50, y: 0.48, radius: 0.05 },
+    { x: 0.50, y: 0.50, radius: 0.05 },
+    { x: 0.55, y: 0.60, radius: 0.05 }
+  ];
+
+  let current = 0; 
+  let startTime = 0; 
+  let timerInterval;
+
+  const img = document.getElementById("hive");
+  const message = document.getElementById("message");
+  const timerDiv = document.getElementById("timer");
+  const gameDiv = document.getElementById("game");
+  const startScreen = document.getElementById("start-screen");
+  const startBtn = document.getElementById("start-btn");
+
+  // --- Start button handler ---
+  startBtn.addEventListener("click", function() {
+    startScreen.style.display = "none"; // hide home screen and image
+    gameDiv.style.display = "inline-block"; // show game
+    message.textContent = "Click where you think the queen is hiding";
+
+    // --- Start timer ---
+    startTime = Date.now();
+    timerDiv.textContent = "Time: 0.0s";
+
+    timerInterval = setInterval(function() {
+      const elapsed = ((Date.now() - startTime)/1000).toFixed(1);
+      timerDiv.textContent = "Time: " + elapsed + "s";
+    }, 100);
+  });
+
+  // --- Click handler ---
+  img.addEventListener("click", function(e) {
+    const rect = img.getBoundingClientRect();
+    const clickX = (e.clientX - rect.left) / rect.width;
+    const clickY = (e.clientY - rect.top) / rect.height;
+
+    const queen = queens[current];
+    const dx = clickX - queen.x;
+    const dy = clickY - queen.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance < queen.radius) {
+      message.textContent = "🎉 You found Big Momma!";
+      message.style.color = "green";
+
+      setTimeout(function() {
+        current++;
+        if (current >= hives.length) {
+          clearInterval(timerInterval);
+          const totalTime = ((Date.now() - startTime)/1000).toFixed(1);
+          message.textContent = "🏆 All hives done! Total time: " + totalTime + " seconds";
+          img.style.display = "none"; 
+          timerDiv.textContent = "Final Time: " + totalTime + "s";
+        } else {
+          img.src = hives[current];
+          message.textContent = "Click where you think the queen is hiding";
+        }
+      }, 1000);
+
+    } else {
+      message.textContent = "❌ Nope — look closer!";
+      message.style.color = "red";
+    }
+  });
+
+});
+</script>
+
+</body>
+</html>
+Sent
+Write to
+
+
+
